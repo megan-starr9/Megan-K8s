@@ -1,22 +1,26 @@
 version: '2.0'
 services:
   nginx:
+    image: nginx:docker.pkg.github.com/megan_starr9/megan-k8s/nginx
     build:
       context: ./nginx
     restart: on-failure
     ports:
       - 80:80
   megstarr:
+    image: megstarr:docker.pkg.github.com/megan_starr9/megan-k8s/megstarr
     build:
       context: ./megstarr
     ports:
     - "3000:3000"
   techofmany:
+    image: techofmany:docker.pkg.github.com/megan_starr9/megan-k8s/techofmany
     build:
       context: ./techofmany
     ports:
     - "3001:3001"
   ratemygm:
+    image: ratemygm:docker.pkg.github.com/megan_starr9/megan-k8s/ratemygm
     build:
       context: ./ratemygm
     ports:
