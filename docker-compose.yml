@@ -3,25 +3,25 @@ services:
   nginx:
     build:
       context: ./nginx
-    image: nginx
+    image: nginx:latest
     restart: on-failure
     ports:
       - 80:80
   megstarr:
     build:
       context: ./megstarr
-    image: "megstarr:docker.pkg.github.com/megan-starr9/megan-k8s/megstarr"
+    image: megstarr:latest
     ports:
     - "3000:3000"
   techofmany:
     build:
       context: ./techofmany
-    image: "techofmany:docker.pkg.github.com/megan-starr9/megan-k8s/techofmany"
+    image: techofmany:latest
     ports:
     - "3001:3001"
   ratemygm:
     build:
       context: ./ratemygm
-    image: "ratemygm:docker.pkg.github.com/megan-starr9/megan-k8s/ratemygm"
+    image: ratemygm:latest
     ports:
     - "3002:3002"
