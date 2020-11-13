@@ -52,10 +52,10 @@ jobs:
 
       - name: Update configurations
         run: |
-          sed -i 's|<IMAGE>|${{ env.MEGSTARR_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/megstarr.yml
-          sed -i 's|<IMAGE>|${{ env.TECHOFMANY_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/techofmany.yml
-          sed -i 's|<IMAGE>|${{ env.RATEMYGM_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/ratemygm.yml
-          sed -i 's|<IMAGE>|${{ env.NGINX_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/nginx.yml
+          sed -i 's|<IMAGE>|${{ env.MEGSTARR_IMG }}|' $GITHUB_WORKSPACE/deploy/megstarr.yml
+          sed -i 's|<IMAGE>|${{ env.TECHOFMANY_IMG }}|' $GITHUB_WORKSPACE/deploy/techofmany.yml
+          sed -i 's|<IMAGE>|${{ env.RATEMYGM_IMG }}|' $GITHUB_WORKSPACE/deploy/ratemygm.yml
+          sed -i 's|<IMAGE>|${{ env.NGINX_IMG }}|' $GITHUB_WORKSPACE/deploy/nginx.yml
           doctl kubernetes cluster kubeconfig save megstarr-k8s-cluster
           kubectl apply -f $GITHUB_WORKSPACE/deploy/
 
