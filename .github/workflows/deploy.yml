@@ -9,10 +9,10 @@ env:
   TECHOFMANY_IMG_ORIGINAL: techofmany:latest
   RATEMYGM_IMG_ORIGINAL: ratemygm:latest
   NGINX_IMG_ORIGINAL: nginx:latest
-  MEGSTARR_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/megstarr:latest
-  TECHOFMANY_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/techofmany:latest
-  RATEMYGM_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/ratemygm:latest
-  NGINX_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/nginx:latest
+  MEGSTARR_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/megstarr
+  TECHOFMANY_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/techofmany
+  RATEMYGM_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/ratemygm
+  NGINX_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/nginx
 
 jobs:
 
@@ -41,44 +41,30 @@ jobs:
           docker images
       - name: Push images
         run: |
-          docker push ${{ env.MEGSTARR_IMG }}
-          docker push ${{ env.TECHOFMANY_IMG }}
-          docker push ${{ env.RATEMYGM_IMG }}
-          docker push ${{ env.NGINX_IMG }}
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          docker push ${{ env.MEGSTARR_IMG }}:${TAG}
+          docker push ${{ env.TECHOFMANY_IMG }}:${TAG}
+          docker push ${{ env.RATEMYGM_IMG }}:${TAG}
+          docker push ${{ env.NGINX_IMG }}:${TAG}
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Deploy megstarr app
+      - name: Update configurations
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           sed -i 's|<IMAGE>|${{ env.MEGSTARR_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/megstarr.yml
-          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
-          kubectl apply -f $GITHUB_WORKSPACE/deploy/megstarr.yml
-          kubectl rollout status deployment/megstarr
-
-      - name: Deploy techofmany app
-        run: |
-          TAG=$(echo $GITHUB_SHA | head -c7)
           sed -i 's|<IMAGE>|${{ env.TECHOFMANY_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/techofmany.yml
-          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
-          kubectl apply -f $GITHUB_WORKSPACE/deploy/techofmany.yml
-          kubectl rollout status deployment/techofmany
-
-      - name: Deploy ratemygm app
-        run: |
-          TAG=$(echo $GITHUB_SHA | head -c7)
           sed -i 's|<IMAGE>|${{ env.RATEMYGM_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/ratemygm.yml
-          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
-          kubectl apply -f $GITHUB_WORKSPACE/deploy/ratemygm.yml
-          kubectl rollout status deployment/ratemygm
-
-      - name: Deploy nginx app
-        run: |
-          TAG=$(echo $GITHUB_SHA | head -c7)
           sed -i 's|<IMAGE>|${{ env.NGINX_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/nginx.yml
-          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
-          kubectl apply -f $GITHUB_WORKSPACE/deploy/nginx.yml
+          doctl kubernetes cluster kubeconfig save megstarr-k8s-cluster
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/
+
+      - name: Verify
+        run: |
+          kubectl rollout status deployment/megstarr
+          kubectl rollout status deployment/techofmany
+          kubectl rollout status deployment/ratemygm
           kubectl rollout status deployment/nginx
