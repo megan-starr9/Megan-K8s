@@ -38,6 +38,7 @@ jobs:
           docker tag ${{ env.TECHOFMANY_IMG_ORIGINAL }} ${{ env.TECHOFMANY_IMG }}
           docker tag ${{ env.RATEMYGM_IMG_ORIGINAL }} ${{ env.RATEMYGM_IMG }}
           docker tag ${{ env.NGINX_IMG_ORIGINAL }} ${{ env.NGINX_IMG }}
+          docker images
       - name: Push images
         run: |
           docker push ${{ env.MEGSTARR_IMG }}
