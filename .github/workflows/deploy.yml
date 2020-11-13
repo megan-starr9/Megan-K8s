@@ -5,10 +5,10 @@ on:
     branches: [ main ]
 
 env:
-  MEGSTARR_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/megstarr
-  TECHOFMANY_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/techofmany
-  RATEMYGM_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/ratemygm
-  NGINX_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+  MEGSTARR_IMG: docker.pkg.github.com/${GITHUB_ACTOR}/$GITHUB_REPOSITORY/megstarr
+  TECHOFMANY_IMG: docker.pkg.github.com/${GITHUB_ACTOR}/$GITHUB_REPOSITORY/techofmany
+  RATEMYGM_IMG: docker.pkg.github.com/${GITHUB_ACTOR}/$GITHUB_REPOSITORY/ratemygm
+  NGINX_IMG: docker.pkg.github.com/${GITHUB_ACTOR}/$GITHUB_REPOSITORY/nginx
 
 jobs:
 
@@ -18,8 +18,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v2
       - name: Log in to GitHub Packages
-        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
-      - name: Pull images
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
         run: |
           docker pull ${{ env.MEGSTARR_IMG }} || true
           docker pull ${{ env.TECHOFMANY_IMG }} || true
