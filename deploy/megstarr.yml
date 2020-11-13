@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: megstarr
+  labels:
+    app: megstarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: megstarr
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: megstarr
+    spec:
+      containers:
+      - name: megstarr
+        image: <IMAGE>
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 100m

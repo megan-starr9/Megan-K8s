@@ -1,0 +1,73 @@
+name: Continuous Integration and CI
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  MEGSTARR_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/megstarr
+  TECHOFMANY_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/techofmany
+  RATEMYGM_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/ratemygm
+  NGINX_IMG: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
+      - name: Log in to GitHub Packages
+        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+      - name: Pull images
+        run: |
+          docker pull ${{ env.MEGSTARR_IMG }} || true
+          docker pull ${{ env.TECHOFMANY_IMG }} || true
+          docker pull ${{ env.RATEMYGM_IMG }} || true
+          docker pull ${{ env.NGINX_IMG }} || true
+      - name: Build images
+        run: |
+          docker-compose build
+      - name: Push images
+        run: |
+          docker push ${{ env.MEGSTARR_IMG }}
+          docker push ${{ env.TECHOFMANY_IMG }}
+          docker push ${{ env.RATEMYGM_IMG }}
+          docker push ${{ env.NGINX_IMG }}
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Deploy megstarr app
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          sed -i 's|<IMAGE>|${{ env.MEGSTARR_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/megstarr.yml
+          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/megstarr.yml
+          kubectl rollout status deployment/megstarr
+
+      - name: Deploy techofmany app
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          sed -i 's|<IMAGE>|${{ env.TECHOFMANY_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/techofmany.yml
+          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/techofmany.yml
+          kubectl rollout status deployment/techofmany
+
+      - name: Deploy ratemygm app
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          sed -i 's|<IMAGE>|${{ env.RATEMYGM_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/ratemygm.yml
+          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/ratemygm.yml
+          kubectl rollout status deployment/ratemygm
+
+      - name: Deploy nginx app
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          sed -i 's|<IMAGE>|${{ env.NGINX_IMG }}:'${TAG}'|' $GITHUB_WORKSPACE/deploy/nginx.yml
+          doctl kubernetes cluster kubeconfig save actions-example-k8s-1-16
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/nginx.yml
+          kubectl rollout status deployment/nginx

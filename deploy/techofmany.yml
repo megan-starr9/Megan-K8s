@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techofmany
+  labels:
+    app: techofmany
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techofmany
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: techofmany
+    spec:
+      containers:
+      - name: techofmany
+        image: <IMAGE>
+        ports:
+        - containerPort: 3001
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 100m
