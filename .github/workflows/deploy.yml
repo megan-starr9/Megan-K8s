@@ -34,11 +34,10 @@ jobs:
           docker-compose build
       - name: Label images
         run: |
-          TAG=$(echo $GITHUB_SHA | head -c7)
-          docker tag ${{ env.MEGSTARR_IMG_ORIGINAL }} ${{ env.MEGSTARR_IMG }}:${TAG}
-          docker tag ${{ env.TECHOFMANY_IMG_ORIGINAL }} ${{ env.TECHOFMANY_IMG }}:${TAG}
-          docker tag ${{ env.RATEMYGM_IMG_ORIGINAL }} ${{ env.RATEMYGM_IMG }}:${TAG}
-          docker tag ${{ env.NGINX_IMG_ORIGINAL }} ${{ env.NGINX_IMG }}:${TAG}
+          docker tag ${{ env.MEGSTARR_IMG_ORIGINAL }} ${{ env.MEGSTARR_IMG }}
+          docker tag ${{ env.TECHOFMANY_IMG_ORIGINAL }} ${{ env.TECHOFMANY_IMG }}
+          docker tag ${{ env.RATEMYGM_IMG_ORIGINAL }} ${{ env.RATEMYGM_IMG }}
+          docker tag ${{ env.NGINX_IMG_ORIGINAL }} ${{ env.NGINX_IMG }}
       - name: Push images
         run: |
           docker push ${{ env.MEGSTARR_IMG }}
