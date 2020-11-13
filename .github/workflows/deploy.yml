@@ -9,10 +9,10 @@ env:
   TECHOFMANY_IMG_ORIGINAL: techofmany:latest
   RATEMYGM_IMG_ORIGINAL: ratemygm:latest
   NGINX_IMG_ORIGINAL: nginx:latest
-  MEGSTARR_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/megstarr
-  TECHOFMANY_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/techofmany
-  RATEMYGM_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/ratemygm
-  NGINX_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/nginx
+  MEGSTARR_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/megstarr:latest
+  TECHOFMANY_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/techofmany:latest
+  RATEMYGM_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/ratemygm:latest
+  NGINX_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/nginx:latest
 
 jobs:
 
