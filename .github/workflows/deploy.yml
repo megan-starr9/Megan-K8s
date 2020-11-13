@@ -5,6 +5,10 @@ on:
     branches: [ main ]
 
 env:
+  MEGSTARR_IMG_ORIGINAL: megstarr:latest
+  TECHOFMANY_IMG_ORIGINAL: techofmany:latest
+  RATEMYGM_IMG_ORIGINAL: ratemygm:latest
+  NGINX_IMG_ORIGINAL: nginx:latest
   MEGSTARR_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/megstarr
   TECHOFMANY_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/techofmany
   RATEMYGM_IMG: docker.pkg.github.com/megan_starr9/megan-k8s/ratemygm
@@ -28,6 +32,13 @@ jobs:
       - name: Build images
         run: |
           docker-compose build
+      - name: Label images
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          docker tag ${{ env.MEGSTARR_IMG_ORIGINAL }} ${{ env.MEGSTARR_IMG }}:${TAG}
+          docker tag ${{ env.TECHOFMANY_IMG_ORIGINAL }} ${{ env.TECHOFMANY_IMG }}:${TAG}
+          docker tag ${{ env.RATEMYGM_IMG_ORIGINAL }} ${{ env.RATEMYGM_IMG }}:${TAG}
+          docker tag ${{ env.NGINX_IMG_ORIGINAL }} ${{ env.NGINX_IMG }}:${TAG}
       - name: Push images
         run: |
           docker push ${{ env.MEGSTARR_IMG }}
