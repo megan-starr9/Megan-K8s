@@ -61,7 +61,7 @@ jobs:
 
       - name: Verify
         run: |
-          kubectl rollout status deployment/megstarr
-          kubectl rollout status deployment/techofmany
-          kubectl rollout status deployment/ratemygm
-          kubectl rollout status deployment/nginx
+          kubectl rollout status deployment/megstarr --timeout=90s
+          kubectl rollout status deployment/techofmany --timeout=90s
+          kubectl rollout status deployment/ratemygm --timeout=90s
+          kubectl rollout status deployment/nginx --timeout=90s
