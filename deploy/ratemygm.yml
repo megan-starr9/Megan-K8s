@@ -31,3 +31,15 @@ spec:
             cpu: 100m
       imagePullSecrets:
         - name: regcred
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ratemygm
+spec:
+  selector:
+    app: ratemygm
+  ports:
+  - port: 3002
