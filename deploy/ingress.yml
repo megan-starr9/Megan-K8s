@@ -9,22 +9,28 @@ spec:
       paths:
       - path: /*
         backend:
-          serviceName: megstarr
-          servicePort: 3000
+          service:
+            name: megstarr
+            port:
+              number: 3000
   - host: ratemygamemaster.com
     http:
       paths:
       - path: /*
         backend:
-          serviceName: ratemygm
-          servicePort: 3002
+          service:
+            name: ratemygm
+            port:
+              number: 3002
   - host: techofmany.com
     http:
       paths:
       - path: /*
         backend:
-          serviceName: techofmany
-          servicePort: 3001
+          service:
+            name: techofmany
+            port:
+              number: 3001
 
 ---
 
