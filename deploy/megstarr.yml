@@ -23,7 +23,8 @@ spec:
       - name: megstarr
         image: <IMAGE>
         ports:
-        - containerPort: 3000
+        - name: entry
+          containerPort: 3000
         resources:
           requests:
             cpu: 100m
@@ -44,4 +45,4 @@ spec:
   ports:
   - protocol: TCP
     port: 3000
-    targetPort: 3000
+    targetPort: entry
