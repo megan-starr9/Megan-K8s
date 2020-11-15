@@ -44,5 +44,5 @@ spec:
     app: techofmany
   ports:
   - protocol: TCP
-    port: 3001
+    port: 80
     targetPort: entry

@@ -44,5 +44,5 @@ spec:
     app: ratemygm
   ports:
   - protocol: TCP
-    port: 3002
+    port: 80
     targetPort: entry
