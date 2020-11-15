@@ -42,4 +42,6 @@ spec:
   selector:
     app: ratemygm
   ports:
-  - port: 3002
+  - protocol: TCP
+    port: 3002
+    targetPort: 3002
