@@ -7,33 +7,24 @@ spec:
   - host: megstarr.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /*
         backend:
-          service:
-            name: megstarr
-            port:
-              number: 80
+          serviceName: megstarr
+          servicePort: 3000
   - host: ratemygamemaster.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /*
         backend:
-          service:
-            name: ratemygm
-            port:
-              number: 80
+          serviceName: ratemygm
+          servicePort: 3002
   - host: techofmany.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /*
         backend:
-          service:
-            name: techofmany
-            port:
-              number: 80
+          serviceName: techofmany
+          servicePort: 3001
 
 ---
 
