@@ -7,7 +7,8 @@ spec:
   - host: megstarr.com
     http:
       paths:
-      - path: /*
+      - pathType: Prefix
+        path: "/"
         backend:
           service:
             name: megstarr
@@ -16,7 +17,8 @@ spec:
   - host: ratemygamemaster.com
     http:
       paths:
-      - path: /*
+      - pathType: Prefix
+        path: "/"
         backend:
           service:
             name: ratemygm
@@ -25,7 +27,8 @@ spec:
   - host: techofmany.com
     http:
       paths:
-      - path: /*
+      - pathType: Prefix
+        path: "/"
         backend:
           service:
             name: techofmany
