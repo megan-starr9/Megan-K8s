@@ -8,11 +8,9 @@ env:
   MEGSTARR_IMG_ORIGINAL: megstarr:latest
   TECHOFMANY_IMG_ORIGINAL: techofmany:latest
   RATEMYGM_IMG_ORIGINAL: ratemygm:latest
-  NGINX_IMG_ORIGINAL: nginx:latest
   MEGSTARR_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/megstarr:latest
   TECHOFMANY_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/techofmany:latest
   RATEMYGM_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/ratemygm:latest
-  NGINX_IMG: docker.pkg.github.com/megan-starr9/megan-k8s/nginx:latest
 
 jobs:
 
@@ -28,7 +26,6 @@ jobs:
           docker pull ${{ env.MEGSTARR_IMG }} || true
           docker pull ${{ env.TECHOFMANY_IMG }} || true
           docker pull ${{ env.RATEMYGM_IMG }} || true
-          docker pull ${{ env.NGINX_IMG }} || true
       - name: Build images
         run: |
           docker-compose build --no-cache
@@ -37,13 +34,11 @@ jobs:
           docker tag ${{ env.MEGSTARR_IMG_ORIGINAL }} ${{ env.MEGSTARR_IMG }}
           docker tag ${{ env.TECHOFMANY_IMG_ORIGINAL }} ${{ env.TECHOFMANY_IMG }}
           docker tag ${{ env.RATEMYGM_IMG_ORIGINAL }} ${{ env.RATEMYGM_IMG }}
-          docker tag ${{ env.NGINX_IMG_ORIGINAL }} ${{ env.NGINX_IMG }}
       - name: Push images
         run: |
           docker push ${{ env.MEGSTARR_IMG }}
           docker push ${{ env.TECHOFMANY_IMG }}
           docker push ${{ env.RATEMYGM_IMG }}
-          docker push ${{ env.NGINX_IMG }}
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -55,7 +50,6 @@ jobs:
           sed -i 's|<IMAGE>|${{ env.MEGSTARR_IMG }}|' $GITHUB_WORKSPACE/deploy/megstarr.yml
           sed -i 's|<IMAGE>|${{ env.TECHOFMANY_IMG }}|' $GITHUB_WORKSPACE/deploy/techofmany.yml
           sed -i 's|<IMAGE>|${{ env.RATEMYGM_IMG }}|' $GITHUB_WORKSPACE/deploy/ratemygm.yml
-          sed -i 's|<IMAGE>|${{ env.NGINX_IMG }}|' $GITHUB_WORKSPACE/deploy/nginx.yml
           doctl kubernetes cluster kubeconfig save megstarr-k8s-cluster
           kubectl apply -f $GITHUB_WORKSPACE/deploy/
 
@@ -64,4 +58,4 @@ jobs:
           kubectl rollout status deployment/megstarr --timeout=90s
           kubectl rollout status deployment/techofmany --timeout=90s
           kubectl rollout status deployment/ratemygm --timeout=90s
-          kubectl rollout status deployment/nginx --timeout=90s
+          kubectl rollout status deployment/virtual-host-ingress --timeout=90s
