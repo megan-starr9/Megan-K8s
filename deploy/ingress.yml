@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: virtual-host-ingress
+spec:
+  rules:
+  - host: megstarr.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: megstarr
+            port:
+              number: 80
+  - host: ratemygamemaster.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ratemygm
+            port:
+              number: 80
+  - host: techofmany.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: techofmany
+            port:
+              number: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: virtual-host-ingress
+spec:
+  type: LoadBalancer
+  selector:
+    app: virtual-host-ingress
+  ports:
+    - port: 80
