@@ -28,11 +28,11 @@ spec:
             port:
               number: 3001
   - http:
-    paths:
-    - pathType: Prefix
-      path: /
-      backend:
-        service:
-          name: megstarr
-          port:
-            number: 3000
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: megstarr
+            port:
+              number: 3000

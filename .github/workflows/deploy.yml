@@ -58,4 +58,3 @@ jobs:
           kubectl rollout status deployment/megstarr --timeout=90s
           kubectl rollout status deployment/techofmany --timeout=90s
           kubectl rollout status deployment/ratemygm --timeout=90s
-          kubectl rollout status deployment/virtual-host-ingress --timeout=90s
