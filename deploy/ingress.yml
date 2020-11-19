@@ -2,23 +2,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: virtual-host-ingress
+  annotations:
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: megstarr.com
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: megstarr
-            port:
-              number: 3000
   - host: ratemygamemaster.com
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: /
         backend:
           service:
             name: ratemygm
@@ -28,22 +21,18 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: /
         backend:
           service:
             name: techofmany
             port:
               number: 3001
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: virtual-host-ingress
-spec:
-  type: LoadBalancer
-  selector:
-    app: virtual-host-ingress
-  ports:
-    - port: 80
+  - http:
+    paths:
+    - pathType: Prefix
+      path: /
+      backend:
+        service:
+          name: megstarr
+          port:
+            number: 3000
