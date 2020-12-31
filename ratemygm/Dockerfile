@@ -1,10 +1,16 @@
-FROM node:12
+FROM node:12 as builder
 
-# Create app directory
 WORKDIR /ratemygm
-
 COPY package*.json ./
 RUN npm install
+COPY tsconfig*.json ./
+COPY *.ts ./
+RUN npm run build
 
-COPY . .
+FROM node:12 as serve
+
+WORKDIR /ratemygm
+COPY --from=builder /ratemygm/package*.json ./
+COPY --from=builder /ratemygm/node_modules ./node_modules
+COPY --from=builder /ratemygm/dist/* ./
 CMD [ "node", "server.js" ]

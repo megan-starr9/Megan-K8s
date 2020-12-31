@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@techofmany/user": "file:../modules/user",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "twig": "^1.15.4"
