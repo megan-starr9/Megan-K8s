@@ -5,16 +5,29 @@ services:
       context: ./megstarr
     image: megstarr:latest
     ports:
-    - "3000:3000"
+      - 3000:3000
   techofmany:
     build:
       context: ./techofmany
     image: techofmany:latest
     ports:
-    - "3001:3001"
+      - 3001:3001
   ratemygm:
     build:
       context: ./ratemygm
     image: ratemygm:latest
     ports:
-    - "3002:3002"
+      - 3002:3002
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: techofmany
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - database:/data/db
+
+volumes:
+  database:
