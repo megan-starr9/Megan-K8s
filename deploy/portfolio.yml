@@ -1,14 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ratemygm
+  name: portfolio
   labels:
-    app: ratemygm
+    app: portfolio
+    tier: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ratemygm
+      app: portfolio
+      tier: frontend
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,14 +19,15 @@ spec:
   template:
     metadata:
       labels:
-        app: ratemygm
+        app: portfolio
+        tier: frontend
     spec:
       containers:
-      - name: ratemygm
+      - name: portfolio
         image: <IMAGE>
         ports:
         - name: entry
-          containerPort: 3002
+          containerPort: 3000
         resources:
           requests:
             cpu: 100m
@@ -38,12 +41,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ratemygm
+  name: portfolio
 spec:
   type: NodePort
   selector:
-    app: ratemygm
+    app: portfolio
+    tier: frontend
   ports:
   - protocol: TCP
-    port: 3002
+    port: 3000
     targetPort: entry

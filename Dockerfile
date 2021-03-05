@@ -1,10 +1,10 @@
 FROM node:12
 
 # Create app directory
-WORKDIR /techofmany
+WORKDIR /src
 
 COPY package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./src .
 CMD [ "node", "server.js" ]
