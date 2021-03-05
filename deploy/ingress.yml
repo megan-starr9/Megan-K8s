@@ -13,6 +13,6 @@ spec:
         path: /
         backend:
           service:
-            name: megstarr
+            name: portfolio
             port:
               number: 3000
