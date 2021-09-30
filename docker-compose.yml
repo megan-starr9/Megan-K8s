@@ -1,8 +1,8 @@
-version: '2.0'
+version: '3.8'
 services:
-  portfolio:
+  k8s-portfolio:
     build:
       context: .
-    image: portfolio:latest
+    image: ${CONTAINER_REGISTRY}/k8s-portfolio:${VERSION}
     ports:
       - 3000:3000

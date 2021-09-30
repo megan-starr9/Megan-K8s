@@ -13,6 +13,6 @@ spec:
         path: /
         backend:
           service:
-            name: portfolio
+            name: k8s-portfolio
             port:
               number: 3000

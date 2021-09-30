@@ -2,7 +2,6 @@ FROM node:12 as builder
 
 COPY package*.json ./
 RUN npm install
-
 # Temporary, until we swap to typescript
 COPY ./src ./dist
 

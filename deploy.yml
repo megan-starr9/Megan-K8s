@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: portfolio
+  name: k8s-portfolio
   labels:
     app: portfolio
     tier: frontend
@@ -23,7 +23,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - name: portfolio
+      - name: k8s-portfolio
         image: <IMAGE>
         ports:
         - name: entry
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: portfolio
+  name: k8s-portfolio
 spec:
   type: NodePort
   selector:
