@@ -1,11 +1,11 @@
-FROM node:12 as builder
+FROM node:16 as builder
 
 COPY package*.json ./
 RUN npm install
 # Temporary, until we swap to typescript
 COPY ./src ./dist
 
-FROM node:12 as serve
+FROM node:16 as serve
 
 WORKDIR /src
 
