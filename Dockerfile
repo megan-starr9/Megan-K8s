@@ -1,15 +1,17 @@
-FROM node:16 as builder
+FROM node:16 as base
+ENV PROJECT_PATH=/var/www/html/megstarr
 
-COPY package*.json ./
+RUN mkdir -p $PROJECT_PATH
+WORKDIR $PROJECT_PATH
+
+# Cache our dependencies in their own layer
+FROM base as dependencies
+COPY package*.json $PROJECT_PATH/
 RUN npm install
+
+FROM dependencies as build
 # Temporary, until we swap to typescript
-COPY ./src ./dist
+COPY ./src $PROJECT_PATH/dist
 
-FROM node:16 as serve
-
-WORKDIR /src
-
-COPY --from=builder /package*.json ./
-COPY --from=builder /node_modules ./node_modules
-COPY --from=builder /dist .
-CMD [ "node", "server.js" ]
+FROM build as final
+CMD [ "node", "./dist/server.js" ]
