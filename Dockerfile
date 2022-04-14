@@ -12,7 +12,7 @@ RUN npm install
 
 FROM dependencies as build
 # Temporary, until we swap to typescript
-COPY ./site/src $PROJECT_PATH/site/src
+COPY ./site $PROJECT_PATH/site
 
 FROM build as final
-CMD [ "node", "./site/src/server.js" ]
+CMD [ "node", "./site/server.js" ]
