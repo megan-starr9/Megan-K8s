@@ -6,12 +6,13 @@ WORKDIR $PROJECT_PATH
 
 # Cache our dependencies in their own layer
 FROM base as dependencies
-COPY package*.json $PROJECT_PATH/
+COPY package.json $PROJECT_PATH/package.json
+COPY ./site/package.json $PROJECT_PATH/site/package.json
 RUN npm install
 
 FROM dependencies as build
 # Temporary, until we swap to typescript
-COPY ./src $PROJECT_PATH/dist
+COPY ./site/src $PROJECT_PATH/site/src
 
 FROM build as final
-CMD [ "node", "./dist/server.js" ]
+CMD [ "node", "./site/src/server.js" ]
