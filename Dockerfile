@@ -1,18 +1,26 @@
-FROM node:16 as base
-ENV PROJECT_PATH=/var/www/html/megstarr
+# ============================= BUILD
+FROM node:16.17.0-bullseye-slim as build
 
+ENV PROJECT_PATH=/var/www/html/megstarr
 RUN mkdir -p $PROJECT_PATH
 WORKDIR $PROJECT_PATH
 
-# Cache our dependencies in their own layer
-FROM base as dependencies
 COPY package.json $PROJECT_PATH/package.json
 COPY ./site/package.json $PROJECT_PATH/site/package.json
-RUN npm install
+RUN npm ci --only=production
 
-FROM dependencies as build
+# ============================= FINAL
+FROM node:16.17.0-bullseye-slim
+RUN apt-get update && apt-get upgrade -y
+
+ENV PROJECT_PATH=/var/www/html/megstarr
+RUN mkdir -p $PROJECT_PATH
+WORKDIR $PROJECT_PATH
+
 # Temporary, until we swap to typescript
-COPY ./site $PROJECT_PATH/site
+COPY --chown=node:node --from=build $PROJECT_PATH/node_modules $PROJECT_PATH/node_modules
+COPY --chown=node:node ./package.json $PROJECT_PATH/package.json
+COPY --chown=node:node ./site $PROJECT_PATH/site
 
-FROM build as final
+USER node
 CMD [ "node", "./site/server.js" ]
