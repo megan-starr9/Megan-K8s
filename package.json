@@ -4,5 +4,8 @@
   "private": false,
   "workspaces": [
     "site"
-  ]
+  ],
+  "scripts": {
+    "start": "npm run start -w site"
+  }
 }
