@@ -1,9 +1,11 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 const port = 3000
 
 // Set render engine
 app.set( 'view engine', 'twig' );
+app.set('views', path.join(__dirname, '/views'));
 
 app.use(express.static('public'));
 

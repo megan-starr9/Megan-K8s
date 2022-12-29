@@ -23,4 +23,4 @@ COPY --chown=node:node ./package.json $PROJECT_PATH/package.json
 COPY --chown=node:node ./site $PROJECT_PATH/site
 
 USER node
-CMD [ "node", "./site/server.js" ]
+CMD [ "npm", "start" ]
