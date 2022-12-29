@@ -7,7 +7,7 @@ WORKDIR $PROJECT_PATH
 
 COPY package.json $PROJECT_PATH/package.json
 COPY ./site/package.json $PROJECT_PATH/site/package.json
-RUN npm ci --only=production
+RUN npm install
 
 # ============================= FINAL
 FROM node:16.17.0-bullseye-slim
